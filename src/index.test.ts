@@ -25,13 +25,17 @@ it('exports method for each util', () => {
     ansi satisfies EachTag
 })
 
+it('has method for background', () => {
+    ansi satisfies { background: ansi.Ansi }
+})
+
 const chained = ansi.red.dim.bold.italic.underline.inverted`chained`
 
 for (const key in UTIL_TAGS) {
     if (key === 'reset') continue
 
     const methodName = key as keyof typeof ansi
-    if (methodName === 'default') continue
+    if (methodName === 'default' || methodName === 'ANSI') continue
 
     const utilTag = UTIL_TAGS[key as keyof typeof UTIL_TAGS]
 
@@ -48,7 +52,7 @@ for (const key in COLOR_CODES) {
     if (key === 'reset') continue
 
     const methodName = key as keyof typeof ansi
-    if (methodName === 'default') continue
+    if (methodName === 'default' || methodName === 'ANSI') continue
 
     const colorCode = COLOR_CODES[key as keyof typeof COLOR_CODES]
 

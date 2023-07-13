@@ -3,7 +3,7 @@
     "description": "Chainable template tag methods for colored console output.",
     "main": "./lib",
     "private": true,
-    "version": "0.0.1",
+    "version": "1.0.0",
     "scripts": {
         "update": "npx npm-check -u",
         "test": "jest --run-in-band --all",

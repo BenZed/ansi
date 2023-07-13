@@ -26,7 +26,7 @@ Chainable:
 ```ts
 import { blue } from '@benzed/ansi'
 
-console.log(blue.dim.italic`words`) // words, but dim blue and italic
+console.log(dim.blue.italic`words`) // 'words', but dim blue and italic
 ```
 
 ## API Reference
