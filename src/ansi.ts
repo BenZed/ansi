@@ -1,4 +1,4 @@
-import { AnsiState, applyAnsiState } from './ansi-state'
+import { AnsiState, AnsiStateData } from './ansi-state'
 
 //// Types ////
 
@@ -25,20 +25,23 @@ export interface Ansi {
 
 //// Util ////
 
-function ansiSignature(
-    this: AnsiState,
-    strings: TemplateStringsArray,
-    ...values: unknown[]
-) {
-    const message = strings
-        .map((str, i) => (i in values ? str + values[i] : str))
-        .join('')
+function createAnsi(data: AnsiStateData = {}) {
+    //
+    const state = data instanceof AnsiState ? data : new AnsiState(data)
 
-    return applyAnsiState(message, this)
-}
+    const templateTagSignature = (
+        strings: TemplateStringsArray,
+        ...values: unknown[]
+    ) => {
+        const message = strings
+            .map((str, i) => (i in values ? str + values[i] : str))
+            .join('')
 
-function createAnsi(state: AnsiState): Ansi {
-    const stateChainDescriptors = Object.getOwnPropertyDescriptors({
+        return state.applyTo(message)
+    }
+
+    //
+    const stateTransitionDescriptors = Object.getOwnPropertyDescriptors({
         get red() {
             return createAnsi({ ...state, color: 'red' })
         },
@@ -88,11 +91,15 @@ function createAnsi(state: AnsiState): Ansi {
     })
 
     return Object.defineProperties(
-        ansiSignature.bind(state),
-        stateChainDescriptors
+        templateTagSignature,
+        stateTransitionDescriptors
     ) as Ansi
 }
 
+//// Main ////
+
+const ansi = createAnsi()
+
 //// Exports ////
 
-export default createAnsi({})
+export default ansi

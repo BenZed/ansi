@@ -18,10 +18,8 @@ function createAnsiColorTag(options: CreateAnsiColorTagOptions): AnsiColorTag {
     const { color, background, bright } = options
 
     const code = COLOR_CODES[color]
-
-    const delta = background ? BACKGROUND_DELTA : 0
-
     const suffix = bright ? BRIGHT_SUFFIX : ''
+    const delta = background ? BACKGROUND_DELTA : 0
 
     return `\u001b[${code + delta}${suffix}m`
 }
@@ -29,8 +27,8 @@ function createAnsiColorTag(options: CreateAnsiColorTagOptions): AnsiColorTag {
 //// Exports ////
 
 export {
-    createAnsiColorTag,
-    CreateAnsiColorTagOptions,
+    AnsiColorCode,
     AnsiColorTag,
-    AnsiColorCode
+    createAnsiColorTag,
+    CreateAnsiColorTagOptions
 }

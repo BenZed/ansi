@@ -3,7 +3,7 @@ import { AnsiColorCode, createAnsiColorTag } from './create-ansi-color-tag'
 
 //// Types ////
 
-interface AnsiState {
+class AnsiStateData {
     bold?: boolean
     color?: AnsiColorCode
     italic?: boolean
@@ -15,35 +15,46 @@ interface AnsiState {
 
 //// Main ////
 
-function applyAnsiState(
-    input: { toString(): string },
-    state: AnsiState
-): string {
-    const { color, intensity, bold, italic, underline, inverted, background } =
-        state
+class AnsiState extends AnsiStateData {
+    constructor(data: AnsiStateData) {
+        super()
+        Object.assign(this, data)
+    }
 
-    const tags: string[] = []
+    applyTo(input: { toString(): string }) {
+        const {
+            color,
+            intensity,
+            bold,
+            italic,
+            underline,
+            inverted,
+            background
+        } = this
 
-    if (bold) tags.push(UTIL_TAGS.bold)
-    if (italic) tags.push(UTIL_TAGS.italic)
-    if (inverted) tags.push(UTIL_TAGS.inverted)
-    if (underline) tags.push(UTIL_TAGS.underline)
-    if (intensity === 'dim') tags.push(UTIL_TAGS.dim)
-    if (color)
-        tags.push(
-            createAnsiColorTag({
-                color,
-                bright: intensity === 'bright',
-                background
-            })
-        )
+        const tags: string[] = []
 
-    const noTagsToApply = tags.length === 0
-    if (noTagsToApply) return input.toString()
+        if (bold) tags.push(UTIL_TAGS.bold)
+        if (italic) tags.push(UTIL_TAGS.italic)
+        if (inverted) tags.push(UTIL_TAGS.inverted)
+        if (underline) tags.push(UTIL_TAGS.underline)
+        if (intensity === 'dim') tags.push(UTIL_TAGS.dim)
+        if (color)
+            tags.push(
+                createAnsiColorTag({
+                    color,
+                    bright: intensity === 'bright',
+                    background
+                })
+            )
 
-    return `${tags.join('')}${input}${UTIL_TAGS.reset}`
+        const noTagsToApply = tags.length === 0
+        if (noTagsToApply) return input.toString()
+
+        return `${tags.join('')}${input}${UTIL_TAGS.reset}`
+    }
 }
 
 //// Exports ////
 
-export { AnsiState, applyAnsiState }
+export { AnsiState, AnsiStateData }
