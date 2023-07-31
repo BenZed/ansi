@@ -2,8 +2,10 @@
     "name": "@benzed/ansi",
     "description": "Chainable template tag methods for colored console output.",
     "main": "./lib",
-    "private": true,
     "version": "1.0.0",
+    "publishConfig": {
+        "access": "public"
+    },
     "scripts": {
         "update": "npx npm-check -u",
         "test": "jest --run-in-band --all",
@@ -23,7 +25,7 @@
     },
     "homepage": "https://github.com/BenZed/ansi#readme",
     "devDependencies": {
-        "@benzed/dev": "^0.14.0",
+        "@benzed/dev": "^0.15.0",
         "@types/jest": "^29.2.0",
         "@typescript-eslint/eslint-plugin": "^5.40.1",
         "@typescript-eslint/parser": "^5.40.1",
